@@ -10,17 +10,13 @@ public class BankApplicationMain {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<Member> members = new ArrayList<>();
-        int account;
-        int money;
-        Member member;
 
-        int acc = 0;
 
         while(true){
             showMenu();
 
             switch (sc.next()){
-                case "1": // 회원가입 
+                case "1": // 회원가입
                     signUp(members);
                     break;
                 case "2": // 입금
@@ -51,9 +47,10 @@ public class BankApplicationMain {
 
     }
     public static Member findMember(ArrayList<Member> members){
-        try{
-            Scanner sc = new Scanner(System.in);
-            System.out.println("계좌번호를 입력해 주세요");
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("계좌번호를 입력해 주세요");
+        if (sc.hasNextInt()){
             int account = sc.nextInt();
             if (account >= members.size() || account < 0){
                 System.out.println("존재하지 않는 계좌번호 입니다.");
@@ -61,11 +58,15 @@ public class BankApplicationMain {
                 return null;
             }
             return members.get(account);
-        } catch(InputMismatchException e){
+
+
+        }
+        else{
             System.out.println("유효한 값을 입력해 주세요. (숫자로)");
             System.out.println();
             return null;
         }
+
 
     }
     private static void showMenu(){
