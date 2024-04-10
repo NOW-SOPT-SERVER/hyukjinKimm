@@ -6,44 +6,41 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BankApplicationMain {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Member> members = new ArrayList<>();
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        ArrayList<Member> members = new ArrayList<>();
-
-
         while(true){
             showMenu();
+            navigate();
+        }
+    }
 
-            switch (sc.next()){
-                case "1": // 회원가입
-                    signUp(members);
-                    break;
-                case "2": // 입금
-                    deposit(members);
-                    break;
-                case "3": // 출금
-                    withDraw(members);
-                    break;
+    public static void navigate(){
+        switch (sc.next()){
+            case "1": // 회원가입
+                signUp(members);
+                break;
+            case "2": // 입금
+                deposit(members);
+                break;
+            case "3": // 출금
+                withDraw(members);
+                break;
 
-                case "4": // 잔금 확인
-                    showMoney(members);
-                    break;
-                case "5": // 프로그램 종료
-                    System.out.println("프로그램을 종료합니다.");
-                    return;
+            case "4": // 잔금 확인
+                showMoney(members);
+                break;
+            case "5": // 프로그램 종료
+                System.out.println("프로그램을 종료합니다.");
+                return;
 
-                default:
-                    System.out.println("명령어를 다시 입력해 주세요");
-                    break;
+            default:
+                System.out.println("명령어를 다시 입력해 주세요");
+                break;
 
-
-            }
 
         }
-
-
-
 
     }
     public static Member findMember(ArrayList<Member> members){

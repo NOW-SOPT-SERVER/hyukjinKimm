@@ -26,17 +26,11 @@ public class Member {
         return money;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
-    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void deposit(int money){
         if (money <= 0) {
