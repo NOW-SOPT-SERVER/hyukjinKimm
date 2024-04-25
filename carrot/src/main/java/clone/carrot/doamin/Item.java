@@ -2,18 +2,18 @@ package clone.carrot.doamin;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
-@Setter
+@NoArgsConstructor
 public  class Item {
     @Id
     @GeneratedValue
     @Column(name = "ITEM_ID")
     private Long id;
-    private String TITLE;
+    private String title;
     private int price;
     private String description;
 
@@ -26,5 +26,29 @@ public  class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+
+    public Item(String title, int price, String description, City city, ItemStatus status, Member member) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
+        this.city = city;
+        this.status = status;
+        this.member = member;
+    }
+
+    public static Item create(
+            Member member,
+            String title,
+            int price,
+            String description,
+            City city,
+            ItemStatus itemStatus
+
+    ) {
+
+        return new Item(title, price, description, city, itemStatus, member);
+
+    }
 }
 
