@@ -20,11 +20,17 @@ public class MemberService {
     public String createMember(
             final MemberCreateDto createDto
             ) {
-        Member member = Member.create(createDto.name());
+        Member member = Member.create(createDto.name(), createDto.age());
         memberRepository.save(member);
         return member.getId().toString();
     }
 
+    public MemberFindDto findMemberById(Long memberId){
+        return MemberFindDto.of(memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND_BY_ID_EXCEPTION)
+        ));
+
+    }
     @Transactional
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(
