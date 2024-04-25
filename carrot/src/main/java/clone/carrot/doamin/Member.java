@@ -20,14 +20,16 @@ public class Member {
 
     private int age;
 
-    public Member(String name) {
+    public Member(String name, int age) {
         this.name = name;
+        this.age = age;
     }
 
     public static Member create(
-            String name
+            String name,
+            int age
     ) {
-        return new Member(name);
+        return new Member(name, age);
     }
 
 
