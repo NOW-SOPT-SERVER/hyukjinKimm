@@ -3,6 +3,8 @@ package clone.carrot.service;
 import clone.carrot.doamin.Member;
 import clone.carrot.doamin.dto.MemberCreateDto;
 import clone.carrot.doamin.dto.MemberFindDto;
+import clone.carrot.exception.NotFoundException;
+import clone.carrot.exception.message.ErrorMessage;
 import clone.carrot.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,7 +28,7 @@ public class MemberService {
     @Transactional
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(
-                () -> new EntityNotFoundException("ID에 해당하는 멤버가 없습니다.")
+                () -> new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND_BY_ID_EXCEPTION)
         );
     }
 
