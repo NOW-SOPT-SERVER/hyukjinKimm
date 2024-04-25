@@ -21,5 +21,9 @@ public  class Item {
     @Enumerated(EnumType.STRING)
     private ItemStatus status; //주문상태 [YET, FIN]
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 }
 
