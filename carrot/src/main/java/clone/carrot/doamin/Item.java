@@ -16,11 +16,12 @@ public  class Item {
     private String TITLE;
     private int price;
     private String description;
-    private String place;
+
+    @Enumerated(EnumType.STRING)
+    private City city;
 
     @Enumerated(EnumType.STRING)
     private ItemStatus status; //주문상태 [YET, FIN]
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")

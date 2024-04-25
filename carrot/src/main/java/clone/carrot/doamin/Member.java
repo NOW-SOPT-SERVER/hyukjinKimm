@@ -18,9 +18,6 @@ public class Member {
     private Long id;
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private City city;
-
     private int age;
 
     public Member(String name) {
