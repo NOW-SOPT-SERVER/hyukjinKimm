@@ -45,11 +45,11 @@ public class ItemService {
     }
 
     public List<ItemFindDto> findItemByCity(String cityName){
-        ArrayList Name = new ArrayList<>(Arrays.asList(City.values()));
 
-        if (Name.contains(cityName)) {
+
+        if (Arrays.stream(City.values()).anyMatch(v -> v.name().equals(cityName))) {
             List<ItemFindDto> itemFindLists = new ArrayList<>();
-            List<Item> items = itemRepository.findByCity(City.valueOf(cityName));
+            List<Item> items = itemRepository.findByCity(City.SEOUL);
 
             for (Item item : items) {
                 itemFindLists.add(ItemFindDto.of(item));
