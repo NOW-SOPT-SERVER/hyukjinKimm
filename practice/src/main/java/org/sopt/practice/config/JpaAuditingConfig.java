@@ -1,0 +1,10 @@
+package org.sopt.practice.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+@Configuration
+@EnableJpaAuditing
+// 설정파일
+public class JpaAuditingConfig {
+}

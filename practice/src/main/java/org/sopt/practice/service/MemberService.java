@@ -3,6 +3,8 @@ package org.sopt.practice.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.sopt.practice.domain.Member;
+import org.sopt.practice.exception.NotFoundException;
+import org.sopt.practice.exception.message.ErrorMessage;
 import org.sopt.practice.repository.MemberRepository;
 import org.sopt.practice.service.dto.MemberCreateDto;
 import org.sopt.practice.service.dto.MemberFindDto;
@@ -29,6 +31,11 @@ public class MemberService {
                 () -> new EntityNotFoundException("ID에 해당하는 사용자가 존재하지 않습니다.")
         ));
 
+    }
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(
+                () -> new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND_BY_ID_EXCEPTION)
+        );
     }
 
     @Transactional
