@@ -2,6 +2,7 @@ package org.sopt.practice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.sopt.practice.auth.PrincipalHandler;
 import org.sopt.practice.controller.dto.BlogCreateRequest;
 import org.sopt.practice.controller.dto.BlogTitleUpdateRequest;
 import org.sopt.practice.controller.dto.SuccessMessage;
@@ -19,16 +20,33 @@ import java.net.URI;
 public class BlogController {
 
     private final BlogService blogService;
+    private final PrincipalHandler principalHandler;
 
     @PostMapping("/blog")
-    public ResponseEntity<SuccessStatusResponse> createBlog(
-            @RequestHeader(value = "memberId") Long memberId,
-            @RequestBody BlogCreateRequest blogCreateRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).header(
-                        "Location",
-                        blogService.create(memberId, blogCreateRequest))
-                .body(SuccessStatusResponse.of(SuccessMessage.BLOG_CREATE_SUCCESS));
+    public ResponseEntity createBlog(
+            @ModelAttribute BlogCreateRequest blogCreateRequest
+    ) {
+        return ResponseEntity.created(URI.create(blogService.create(
+                principalHandler.getUserIdFromPrincipal(), blogCreateRequest))).build();
     }
+
+//    @PostMapping("/blog")
+//    public ResponseEntity createBlog(
+//            BlogCreateRequest blogCreateRequest
+//    ) {
+//        return ResponseEntity.created(URI.create(blogService.create(
+//                principalHandler.getUserIdFromPrincipal(), blogCreateRequest))).build();
+//    }
+
+//    @PostMapping("/blog")
+//    public ResponseEntity<SuccessStatusResponse> createBlog(
+//            @RequestHeader(value = "memberId") Long memberId,
+//            @RequestBody BlogCreateRequest blogCreateRequest) {
+//        return ResponseEntity.status(HttpStatus.CREATED).header(
+//                        "Location",
+//                        blogService.create(memberId, blogCreateRequest))
+//                .body(SuccessStatusResponse.of(SuccessMessage.BLOG_CREATE_SUCCESS));
+//    }
 
 
     @PatchMapping("/blog/{blogId}/title")

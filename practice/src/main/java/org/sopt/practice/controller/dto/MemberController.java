@@ -5,6 +5,8 @@ import org.sopt.practice.domain.Member;
 import org.sopt.practice.service.MemberService;
 import org.sopt.practice.service.dto.MemberCreateDto;
 import org.sopt.practice.service.dto.MemberFindDto;
+import org.sopt.practice.service.dto.UserJoinResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +19,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
-    public ResponseEntity createMember(
-            @RequestBody MemberCreateDto memberCreate
-    ) {
-        return ResponseEntity.created(URI.create(memberService.createMember(memberCreate))).build();
-
-    }
     @GetMapping("/{memberId}")
     public ResponseEntity<MemberFindDto> findMemberById(@PathVariable("memberId") Long memberId){
         return ResponseEntity.ok(memberService.findMemberById(memberId));
@@ -35,5 +30,17 @@ public class MemberController {
     ) {
         memberService.deleteMemberById(memberId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<UserJoinResponse> postMember(
+            @RequestBody MemberCreateDto memberCreate
+    ) {
+        UserJoinResponse userJoinResponse = memberService.createMember(memberCreate);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Location", userJoinResponse.userId())
+                .body(
+                        userJoinResponse
+                );
     }
 }

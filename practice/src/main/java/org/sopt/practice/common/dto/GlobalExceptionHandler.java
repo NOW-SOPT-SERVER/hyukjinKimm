@@ -2,6 +2,7 @@ package org.sopt.practice.common.dto;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.sopt.practice.exception.NotFoundException;
+import org.sopt.practice.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,5 +22,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage()));
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    protected ResponseEntity<ErrorResponse> handlerUnauthorizedException(UnauthorizedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.of(e.getErrorMessage().getStatus(), e.getErrorMessage().getMessage()));
     }
 }
