@@ -3,11 +3,13 @@ package org.sopt.practice.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.sopt.practice.auth.UserAuthentication;
+import org.sopt.practice.auth.redis.domain.Token;
 import org.sopt.practice.common.jwt.JwtTokenProvider;
 import org.sopt.practice.domain.Member;
 import org.sopt.practice.exception.NotFoundException;
 import org.sopt.practice.exception.message.ErrorMessage;
 import org.sopt.practice.repository.MemberRepository;
+import org.sopt.practice.repository.RedisTokenRepository;
 import org.sopt.practice.service.dto.MemberCreateDto;
 import org.sopt.practice.service.dto.MemberFindDto;
 import org.sopt.practice.service.dto.UserJoinResponse;
@@ -20,6 +22,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisTokenRepository redisTokenRepository;
 
     @Transactional
     public UserJoinResponse createMember(
@@ -29,10 +32,17 @@ public class MemberService {
                 Member.create(memberCreate.name(), memberCreate.part(), memberCreate.age())
         );
         Long memberId = member.getId();
+        UserAuthentication userAuthentication = UserAuthentication.createUserAuthentication(memberId);
         String accessToken = jwtTokenProvider.issueAccessToken(
-                UserAuthentication.createUserAuthentication(memberId)
+                userAuthentication
         );
-        return UserJoinResponse.of(accessToken, memberId.toString());
+        String refreshToken = jwtTokenProvider.issueRefreshToken(
+                userAuthentication
+        );
+
+        redisTokenRepository.save(Token.builder().id(memberId).refreshToken(refreshToken).build());
+
+        return UserJoinResponse.of(accessToken, refreshToken, memberId.toString());
     }
 
     public MemberFindDto findMemberById(Long memberId){
