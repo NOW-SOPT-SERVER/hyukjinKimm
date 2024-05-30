@@ -16,6 +16,7 @@ public  class Item {
     private String title;
     private int price;
     private String description;
+    private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     private City city;
@@ -28,13 +29,14 @@ public  class Item {
     private Member member;
 
 
-    public Item(String title, int price, String description, City city, ItemStatus status, Member member) {
+    public Item(String title, int price, String description, City city, ItemStatus status, Member member, String imageUrl) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.city = city;
         this.status = status;
         this.member = member;
+        this.imageUrl = imageUrl;
     }
 
     public static Item create(
@@ -43,11 +45,12 @@ public  class Item {
             int price,
             String description,
             City city,
-            ItemStatus itemStatus
+            ItemStatus itemStatus,
+            String imageUrl
 
     ) {
 
-        return new Item(title, price, description, city, itemStatus, member);
+        return new Item(title, price, description, city, itemStatus, member, imageUrl);
 
     }
 }
