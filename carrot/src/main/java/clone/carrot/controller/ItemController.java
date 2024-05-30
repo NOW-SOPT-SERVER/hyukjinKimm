@@ -1,6 +1,7 @@
 package clone.carrot.controller;
 
 import clone.carrot.doamin.dto.ItemCreateRequestDto;
+import clone.carrot.doamin.dto.ItemDeleteRequestDto;
 import clone.carrot.doamin.dto.ItemFindDto;
 import clone.carrot.service.ItemService;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,10 +22,19 @@ public class ItemController {
     @PostMapping("/item")
     public ResponseEntity<String> createItem(
             @RequestHeader(value = "memberId") Long memberId,
-            @RequestBody ItemCreateRequestDto itemCreateRequestDto
+            @ModelAttribute ItemCreateRequestDto itemCreateRequestDto
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(itemService.create(memberId, itemCreateRequestDto));
+    }
+
+    @DeleteMapping("/item")
+    public ResponseEntity<String> createItem(
+            @RequestHeader(value = "memberId") Long memberId,
+            @RequestBody ItemDeleteRequestDto itemDeleteRequestDto
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(itemService.delete(memberId, itemDeleteRequestDto));
     }
 
 
