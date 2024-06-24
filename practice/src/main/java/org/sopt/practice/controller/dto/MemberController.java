@@ -28,6 +28,10 @@ public class MemberController {
     public ResponseEntity<MemberFindDto> findMemberById(@PathVariable("memberId") Long memberId){
         return ResponseEntity.ok(memberService.findMemberById(memberId));
     }
+    @GetMapping
+    public ResponseEntity findAllMember(){
+        return ResponseEntity.ok(memberService.findAllMember());
+    }
 
     @DeleteMapping("/{memberId}")
     public ResponseEntity deleteMemberById(
@@ -36,4 +40,5 @@ public class MemberController {
         memberService.deleteMemberById(memberId);
         return ResponseEntity.noContent().build();
     }
+
 }
